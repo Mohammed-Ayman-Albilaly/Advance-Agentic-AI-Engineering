@@ -20,6 +20,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from prometheus_client import generate_latest
+
 from app.config import Settings
 from app.llm import build_openai_coordinator
 from app.observability import Observability
@@ -87,6 +89,13 @@ def main() -> None:
     required = {"get_courses", "get_tasks", "get_availability_windows"}
     success = required.issubset(set(called)) and result.llm_calls >= 2
 
+    metrics_text = generate_latest(observer.registry).decode("utf-8")
+    llm_metric_lines = [
+        line
+        for line in metrics_text.splitlines()
+        if line.startswith(("uniflow_llm_calls_total{", "uniflow_llm_tokens_total{"))
+    ]
+
     lines = [
         "=== STEP 8 LIVE OPENAI FUNCTION-CALLING EVIDENCE ===",
         "provider=openai",
@@ -98,6 +107,8 @@ def main() -> None:
         f"tasks_loaded={len(result.tool_results.get('get_tasks', []))}",
         f"availability_loaded={len(result.tool_results.get('get_availability_windows', []))}",
         "summary=" + result.summary.replace("\n", " "),
+        "OBSERVABILITY_LLM_METRICS (real Prometheus counters from this run):",
+        *llm_metric_lines,
         f"LIVE_OPENAI_SUCCESS={str(success).lower()}",
     ]
     emit(lines)

@@ -13,7 +13,7 @@
     "live_docker_health_evidence": false
   },
   "pytest_returncode": 0,
-  "pytest_output": "................................................................         [100%]\n64 passed in 15.56s",
+  "pytest_output": "................................................................         [100%]\n64 passed in 13.99s",
   "pending_required_evidence": [
     "live Docker /health"
   ]
