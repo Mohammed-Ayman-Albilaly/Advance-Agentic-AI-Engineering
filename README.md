@@ -231,6 +231,7 @@ evidence/step07_function_calling_protocol.txt
 evidence/step07_test_run.txt
 evidence/step08_live_openai.txt
 evidence/step08_full_graph_hitl.txt
+evidence/step08_retry_exhaustion.txt
 evidence/step08_submission_gate.txt
 ```
 

@@ -21,6 +21,7 @@ def run(script: str) -> int:
 def main() -> None:
     # Each proof is independent. Missing prerequisites do not prevent the others.
     run("demo_step08_full_graph.py")
+    run("demo_step08_retry_exhaustion.py")
     run("demo_step08_live_llm.py")
     run("demo_step08_docker.py")
     run("final_validate.py")

@@ -12,6 +12,7 @@
 ## Non-Negotiable Failure Paths
 - Prompt injection is actually blocked — **captured**.
 - Retry/re-plan actually executes — **captured**, including a real installed-LangGraph run.
+- Exhausted re-planning reaches a safe terminal failure instead of looping forever — **captured** on the real installed LangGraph runtime (`evidence/step08_retry_exhaustion.txt`, `RETRY_EXHAUSTION_SAFE_FAILURE_SUCCESS=true`).
 - Human approval actually pauses and resumes — **captured** on the real installed LangGraph runtime with a real checkpoint-connection close/reopen simulating a restart.
 - Persistent workflow state survives restart — **captured** in the same run (`HITL_RESTART_RESUME_SUCCESS=true`).
 - Structured logs/metrics, not print-only — **captured**.

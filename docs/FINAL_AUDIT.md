@@ -36,6 +36,7 @@ This audit distinguishes **implemented source**, **executed evidence**, and **st
 
 ### Executed evidence
 - The real installed LangGraph `StateGraph` was compiled and executed end to end, captured in `evidence/step08_full_graph_hitl.txt`: the Reviewer rejects an infeasible first plan, the graph loops back to Planning (`planning_node_visits=2`, `reviewer_node_visits=2`), Planning switches strategy to `deadline_first_replan`, and the graph reaches the `human_approval` interrupt (`REPLAN_LOOP_SUCCESS=true`).
+- The deterministic termination condition (bounded retries) was also exercised on the real installed LangGraph runtime with a structurally infeasible workload: the graph rejects on every pass, exhausts `max_replans`, and reaches the `failed` terminal node instead of looping forever — captured in `evidence/step08_retry_exhaustion.txt` (`RETRY_EXHAUSTION_SAFE_FAILURE_SUCCESS=true`) and enforced by `tests/test_graph_workflow.py::test_real_graph_terminates_via_failed_node_when_retries_exhausted`.
 - Graph topology is captured and tested.
 
 **Status: source complete; live LangGraph runtime evidence captured.**
