@@ -4,7 +4,7 @@
 
 The system converts persisted courses, academic tasks, deadlines, and study availability into a reviewed study plan. It combines OpenAI function calling, a LangGraph state graph, specialized agents, real Python/SQLite tools, security guardrails, human approval, persistent checkpoints, structured observability, FastAPI, and Docker packaging.
 
-> **Capstone status:** implementation through Step 08 is complete. Automated tests and the locally available execution paths are captured. The final submission gate remains intentionally red until three environment-dependent proof runs succeed: live OpenAI function calling, real LangGraph re-plan + durable HITL restart/resume, and live Docker execution. See `docs/FINAL_SUBMISSION_CHECKLIST.md`.
+> **Capstone status:** implementation through Step 08 is complete. Automated tests (64 passed, 0 skipped) and all locally available execution paths are captured, including two of the three environment-dependent live proof runs: a real live OpenAI function-calling call (`evidence/step08_live_openai.txt`) and a real LangGraph re-plan loop plus durable HITL restart/resume against the installed LangGraph runtime (`evidence/step08_full_graph_hitl.txt`). The submission gate remains red only until the third proof — a live `docker compose up --build` health response — is captured. See `docs/FINAL_SUBMISSION_CHECKLIST.md`.
 
 ## Problem
 A normal to-do list stores deadlines but does not reason about urgency, workload, feasibility, conflicts, or re-planning. UniFlow AI adds an agentic workflow that inspects real persisted data, creates a schedule, reviews it, loops when the plan is infeasible, pauses for human approval, and persists the approved result.
@@ -229,10 +229,12 @@ evidence/step06_live_http.txt
 evidence/step06_observability_api.txt
 evidence/step07_function_calling_protocol.txt
 evidence/step07_test_run.txt
+evidence/step08_live_openai.txt
+evidence/step08_full_graph_hitl.txt
 evidence/step08_submission_gate.txt
 ```
 
-Step 07 protocol evidence deliberately labels the fake provider trajectory as **not live-provider evidence**. It proves the function-calling implementation while executing real SQLite tools. The final live OpenAI call must be captured separately before submission.
+Step 07 protocol evidence deliberately labels the fake provider trajectory as **not live-provider evidence**. It proves the function-calling implementation while executing real SQLite tools. The real live OpenAI call is captured separately in `evidence/step08_live_openai.txt` (`LIVE_OPENAI_SUCCESS=true`, model `gpt-5.5`, 2 live API round-trips, all required context tools genuinely executed). The real installed-LangGraph re-plan loop and durable HITL restart/resume are captured in `evidence/step08_full_graph_hitl.txt` (`REPLAN_LOOP_SUCCESS=true`, `HITL_RESTART_RESUME_SUCCESS=true`).
 
 ## Documentation
 - `PROJECT_SPEC.md` — locked project scope and definition of done.
@@ -242,6 +244,11 @@ Step 07 protocol evidence deliberately labels the fake provider trajectory as **
 - `docs/FINAL_AUDIT.md` — implementation/evidence audit.
 - `docs/STEP_08_FINAL_EXECUTION.md` — exact final proof commands.
 - `docs/FINAL_SUBMISSION_CHECKLIST.md` — 100-point submission checklist and gate.
+
+## Team
+- Mohammed Albilaly
+- Suliman Alhuwirini
+- Turki Alotaibi
 
 ## Training Program Attribution
 Completed under **Advanced Agentic AI Systems Engineering**, SDAIA Academy, delivered via Learning Space. 5-day on-site capstone cohort/session: **9–13 August 2026**.
