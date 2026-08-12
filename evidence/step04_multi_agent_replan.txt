@@ -1,0 +1,21 @@
+=== STEP 4 MULTI-AGENT REPLAN DEMO ===
+Coordinator -> TaskAnalysis -> Planning -> Reviewer
+
+Coordinator intent: create_study_plan
+Coordinator real tool calls: ['get_courses', 'get_tasks', 'get_availability_windows']
+Early task priority score: 44.0
+Later critical task priority score: 80.0
+
+Attempt 0 strategy: priority_first
+First scheduled task is later critical task: True
+Reviewer result: replan_required
+Retry count: 1
+Reviewer feedback:
+- task a69bfdb1-f248-46f8-b37e-0fd953f76ddf is under-planned by 2.0h
+
+Attempt 1 strategy: deadline_first_replan
+First scheduled task is now near-deadline task: True
+Reviewer result after replan: approved
+Reviewer feedback after replan: []
+
+RESULT: reviewer feedback changed planning strategy and repaired the plan.

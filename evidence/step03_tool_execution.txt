@@ -1,0 +1,6 @@
+{"step": "add_course", "result": {"code": "CEN 351", "name": "Signals and Systems", "credit_hours": 3.0, "id": "c8cc974f-162e-4cbf-aa6a-7a40f308c326", "user_id": "evidence-student", "created_at": "2026-08-12T18:20:17.960888Z"}}
+{"step": "add_task", "result": {"title": "Capstone planning exercise", "course_id": "c8cc974f-162e-4cbf-aa6a-7a40f308c326", "deadline": "2026-08-13T12:00:00Z", "estimated_hours": 4.0, "difficulty": 4, "user_priority": "high", "id": "d7ff5e05-613c-41c8-9303-b4a53331da31", "user_id": "evidence-student", "status": "todo", "created_at": "2026-08-12T18:20:17.965249Z"}}
+{"step": "available_hours", "result": {"total_hours": 3.0, "hours_by_date": {"2026-08-13": 3.0}, "window_count": 1}}
+{"step": "priority_analysis", "result": {"task_id": "d7ff5e05-613c-41c8-9303-b4a53331da31", "urgency_score": 95.0, "priority_score": 80.0, "hours_remaining": 4.0, "deadline_risk": "critical", "reasoning_summary": "Risk=critical; deadline is 24.0 hours away; difficulty=4/5; estimated effort=4.0h; user priority=high."}}
+{"step": "deadline_conflicts", "result": ["Capstone planning exercise: cumulative workload exceeds available study capacity before its deadline by 4.0h"]}
+{"step": "transient_failure_retry", "result": {"attempts": 2, "value": {"status": "recovered", "call_number": 2}}}

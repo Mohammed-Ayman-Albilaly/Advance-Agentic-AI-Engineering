@@ -1,0 +1,8 @@
+EVIDENCE_TYPE=PROTOCOL_TEST_NOT_LIVE_PROVIDER
+llm_calls= 2
+tool_calls= [{"name": "get_courses", "call_id": "call-1", "round": 1}, {"name": "get_tasks", "call_id": "call-2", "round": 1}, {"name": "get_availability_windows", "call_id": "call-3", "round": 1}]
+courses_loaded= 1
+tasks_loaded= 1
+availability_loaded= 1
+summary= Persisted student context inspected; continue to task analysis and planning.
+uniflow_llm_calls_total{agent="CoordinatorAgent",model="gpt-test-protocol",provider="openai",success="true"} 2.0

@@ -1,0 +1,9 @@
+[project]
+name = "uniflow-ai"
+version = "0.1.0"
+description = "Multi-agent university study and task coordinator capstone"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"

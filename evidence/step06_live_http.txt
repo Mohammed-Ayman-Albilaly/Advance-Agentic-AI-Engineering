@@ -1,0 +1,6 @@
+URL: http://127.0.0.1:8765/health
+STATUS: 200
+BODY: {"status":"ok","app":"UniFlow AI","environment":"test"}
+URL: http://127.0.0.1:8765/metrics
+STATUS: 200
+METRIC_SAMPLE: ['uniflow_api_requests_total{method="GET",route="/health",status_code="200"} 1.0']

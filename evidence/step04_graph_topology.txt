@@ -1,0 +1,13 @@
+nodes: coordinator, task_analysis, planning, reviewer, ready_for_approval, failed
+static_edges:
+   START -> coordinator
+   coordinator -> task_analysis
+   task_analysis -> planning
+   planning -> reviewer
+   ready_for_approval -> END
+   failed -> END
+reviewer_routes:
+   approved -> ready_for_approval
+   replan -> planning
+   failed -> failed
+required_loop: reviewer -> planning

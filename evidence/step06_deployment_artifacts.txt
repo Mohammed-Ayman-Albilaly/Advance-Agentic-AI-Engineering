@@ -1,0 +1,6 @@
+Docker CLI availability check:
+docker: unavailable in this execution sandbox
+
+Deployment artifact tests:
+....                                                                     [100%]
+4 passed in 0.05s

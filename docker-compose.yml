@@ -1,0 +1,25 @@
+services:
+  uniflow-api:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    environment:
+      APP_NAME: ${APP_NAME:-UniFlow AI}
+      APP_ENV: ${APP_ENV:-production}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      LOG_PATH: /app/logs/uniflow.jsonl
+      DATABASE_PATH: /app/data/uniflow.sqlite
+      CHECKPOINT_DATABASE_PATH: /app/data/checkpoints.sqlite
+      MAX_REPLANS: ${MAX_REPLANS:-3}
+      LLM_PROVIDER: ${LLM_PROVIDER:-not_configured}
+      LLM_MODEL: ${LLM_MODEL:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+    volumes:
+      - uniflow-data:/app/data
+      - uniflow-logs:/app/logs
+    restart: unless-stopped
+
+volumes:
+  uniflow-data:
+  uniflow-logs:
