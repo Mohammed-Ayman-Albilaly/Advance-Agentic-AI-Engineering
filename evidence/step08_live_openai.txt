@@ -1,0 +1,11 @@
+=== STEP 8 LIVE OPENAI FUNCTION-CALLING EVIDENCE ===
+provider=openai
+model=gpt-5.5
+llm_calls=2
+tool_calls=["get_courses", "get_tasks", "get_availability_windows"]
+required_tools_executed=True
+courses_loaded=1
+tasks_loaded=1
+availability_loaded=1
+summary=Execution summary: - Persisted context inspected successfully. - Course found: CEN 351 — Signals and Systems, 3 credit hours. - Active task: Capstone live LLM evidence task.   - Status: todo   - Estimated effort: 2 hours   - Difficulty: 4/5   - Priority: high   - Deadline: 2026-08-14 at 22:19 UTC - Available study window:   - 2026-08-13, 18:00–21:00   - Total available time: 3 hours  Coordination brief for study-plan creation: - Build a realistic plan around the single 3-hour availability window. - Allocate 2 focused hours to complete the high-priority task. - Reserve the remaining 1 hour for review, cleanup, submission checks, and buffer time. - Because the task is high priority and due the next day, schedule it early in the window rather than leaving it to the end. - Recommended structure:   1. 18:00–18:15 — clarify requirements and gather materials.   2. 18:15–19:45 — complete the main evidence/task work.   3. 19:45–20:15 — revise, verify, and polish.   4. 20:15–20:45 — finalize submission-ready version.   5. 20:45–21:00 — buffer for unexpected issues.  Relevant constraints: - Only one persisted task is currently unfinished. - Only one persisted study window is available. - The plan should prioritize deadline safety over optional extra study.
+LIVE_OPENAI_SUCCESS=true

@@ -7,17 +7,14 @@
     "openai_sdk_installed": true,
     "openai_key_configured": false,
     "docker_cli_available": true,
-    "live_openai_evidence": false,
-    "real_langgraph_loop_evidence": false,
-    "durable_hitl_restart_resume_evidence": false,
+    "live_openai_evidence": true,
+    "real_langgraph_loop_evidence": true,
+    "durable_hitl_restart_resume_evidence": true,
     "live_docker_health_evidence": false
   },
   "pytest_returncode": 0,
-  "pytest_output": "................................................................         [100%]\n64 passed in 3.60s",
+  "pytest_output": "................................................................         [100%]\n64 passed in 15.56s",
   "pending_required_evidence": [
-    "live OpenAI function-calling",
-    "real LangGraph re-plan loop",
-    "durable HITL restart/resume",
     "live Docker /health"
   ]
 }

@@ -1,14 +1,14 @@
 === UNIFLOW AI FINAL SUBMISSION GATE ===
 automated_tests=PASS
-pytest_summary=64 passed in 3.60s
+pytest_summary=64 passed in 15.56s
 langgraph_installed=True
 checkpoint_sqlite_installed=True
 openai_sdk_installed=True
 openai_key_configured=False
 docker_cli_available=True
-live_openai_evidence=False
-real_langgraph_loop_evidence=False
-durable_hitl_restart_resume_evidence=False
+live_openai_evidence=True
+real_langgraph_loop_evidence=True
+durable_hitl_restart_resume_evidence=True
 live_docker_health_evidence=False
-pending=live OpenAI function-calling, real LangGraph re-plan loop, durable HITL restart/resume, live Docker /health
+pending=live Docker /health
 SUBMISSION_READY=false
