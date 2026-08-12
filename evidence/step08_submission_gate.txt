@@ -1,11 +1,11 @@
 === UNIFLOW AI FINAL SUBMISSION GATE ===
 automated_tests=PASS
-pytest_summary=62 passed, 2 skipped in 1.25s
-langgraph_installed=False
-checkpoint_sqlite_installed=False
-openai_sdk_installed=False
+pytest_summary=64 passed in 3.60s
+langgraph_installed=True
+checkpoint_sqlite_installed=True
+openai_sdk_installed=True
 openai_key_configured=False
-docker_cli_available=False
+docker_cli_available=True
 live_openai_evidence=False
 real_langgraph_loop_evidence=False
 durable_hitl_restart_resume_evidence=False

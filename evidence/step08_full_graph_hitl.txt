@@ -1,0 +1,16 @@
+=== STEP 8 REAL LANGGRAPH + DURABLE HITL EVIDENCE ===
+thread_id=step08-real-graph-hitl
+checkpoint_backend=SqliteSaver
+paused_at_interrupt=True
+retry_count_before_approval=1
+planning_strategy_after_replan=deadline_first_replan
+graph_trace_before_approval=['input_guardrail', 'coordinator', 'task_analysis', 'planning', 'reviewer', 'planning', 'reviewer']
+planning_node_visits=2
+reviewer_node_visits=2
+REPLAN_LOOP_SUCCESS=true
+checkpoint_connection_closed=true
+graph_rebuilt_after_restart=true
+resume_workflow_status=completed
+approval_status=approved
+persisted_plan_after_restart=True
+HITL_RESTART_RESUME_SUCCESS=true

@@ -2,18 +2,18 @@
   "submission_ready": false,
   "checks": {
     "automated_tests": true,
-    "langgraph_installed": false,
-    "checkpoint_sqlite_installed": false,
-    "openai_sdk_installed": false,
+    "langgraph_installed": true,
+    "checkpoint_sqlite_installed": true,
+    "openai_sdk_installed": true,
     "openai_key_configured": false,
-    "docker_cli_available": false,
+    "docker_cli_available": true,
     "live_openai_evidence": false,
     "real_langgraph_loop_evidence": false,
     "durable_hitl_restart_resume_evidence": false,
     "live_docker_health_evidence": false
   },
   "pytest_returncode": 0,
-  "pytest_output": "...........s...........s........................................         [100%]\n=========================== short test summary info ============================\nSKIPPED [1] tests/test_checkpoint.py:16: LangGraph dependency unavailable in this execution sandbox\nSKIPPED [1] tests/test_graph_workflow.py:25: LangGraph dependency unavailable in this execution sandbox\n62 passed, 2 skipped in 1.25s",
+  "pytest_output": "................................................................         [100%]\n64 passed in 3.60s",
   "pending_required_evidence": [
     "live OpenAI function-calling",
     "real LangGraph re-plan loop",
