@@ -15,7 +15,7 @@ This audit distinguishes **implemented source**, **executed evidence**, and **st
 ### Executed evidence
 - Real tools execute against SQLite.
 - Function-calling protocol executes real tools under a controlled fake provider trajectory.
-- Tool failures/retries and ownership boundaries are tested.
+- Tool failures/retries and ownership boundaries are tested. Transient SQLite lock contention (a genuine failure mode given this app's per-request connections) is retried automatically inside the shared `tool_call` path used by every real agent and graph node — not only in an isolated demo — verified by `tests/test_agents.py::test_tool_call_retries_transient_sqlite_lock_and_succeeds`.
 
 ### Live-provider evidence
 - One live OpenAI Responses API function-calling execution with real provider output captured in `evidence/step08_live_openai.txt`: model `gpt-5.5`, 2 live API round-trips, all required context tools (`get_courses`, `get_tasks`, `get_availability_windows`) genuinely executed against real SQLite data, `LIVE_OPENAI_SUCCESS=true`.

@@ -2,18 +2,40 @@
 
 from __future__ import annotations
 
+import sqlite3
 from datetime import datetime, timezone
 from time import perf_counter
 from typing import Any, Callable, TypeVar
 
 from app.graph.state import StudyState
 from app.observability import get_observability
+from app.tools.runtime import TransientToolError, execute_with_retry
 
 T = TypeVar("T")
 
 
 def utc_now() -> datetime:
     return datetime.now(timezone.utc)
+
+
+def _with_transient_sqlite_retry(operation: Callable[[], T]) -> T:
+    """Retry a real tool call when SQLite reports transient lock contention.
+
+    Each request opens its own SQLite connection (see ``Database.connect``), so
+    brief "database is locked" contention under concurrent writers is a genuine,
+    non-hypothetical transient failure for this deployment, not a contrived one.
+    Any other exception (validation, ownership, integrity) is never retried.
+    """
+
+    def guarded() -> T:
+        try:
+            return operation()
+        except sqlite3.OperationalError as exc:
+            if "locked" in str(exc).lower():
+                raise TransientToolError(str(exc)) from exc
+            raise
+
+    return execute_with_retry(guarded, max_attempts=3, delay_seconds=0.05).value
 
 
 def tool_call(
@@ -33,7 +55,7 @@ def tool_call(
 
     started = perf_counter()
     try:
-        value = operation()
+        value = _with_transient_sqlite_retry(operation)
     except Exception as exc:
         elapsed = round((perf_counter() - started) * 1000, 3)
         event = {

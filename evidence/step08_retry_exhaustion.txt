@@ -7,5 +7,5 @@ reviewer_node_visits=4
 graph_trace=['input_guardrail', 'coordinator', 'task_analysis', 'planning', 'reviewer', 'planning', 'reviewer', 'planning', 'reviewer', 'planning', 'reviewer', 'failed']
 final_workflow_status=failed_after_replans
 terminated_via_failed_node=True
-errors=['maximum re-planning/approval attempts exhausted: Structurally infeasible task: cumulative workload exceeds available study capacity before its deadline by 99.0h; task c84d96d4-30c3-45a7-80c9-5fca29a7d68a is under-planned by 99.0h']
+errors=['maximum re-planning/approval attempts exhausted: Structurally infeasible task: cumulative workload exceeds available study capacity before its deadline by 99.0h; task e1bbb32b-b5a4-4d7f-8da0-29e4969421b0 is under-planned by 99.0h']
 RETRY_EXHAUSTION_SAFE_FAILURE_SUCCESS=true

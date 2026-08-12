@@ -1,6 +1,10 @@
+import sqlite3
 from datetime import datetime, timezone
 
+import pytest
+
 from app.agents import CoordinatorAgent, PlanningAgent, ReviewerAgent, TaskAnalysisAgent
+from app.agents.base import tool_call
 from app.persistence import Database
 from app.tools import StudyTools
 
@@ -150,3 +154,51 @@ def test_planner_reports_unscheduled_hours_when_capacity_is_impossible(tmp_path)
 
     result = PlanningAgent(clock=lambda: NOW).run(state)
     assert result["unscheduled_hours"][task["id"]] == 3.0
+
+
+def test_tool_call_retries_transient_sqlite_lock_and_succeeds():
+    """Every real agent tool call goes through ``tool_call``. A transient SQLite
+    lock (a genuine failure mode for this app's per-request connections) must be
+    retried and recovered, not surfaced as a hard failure on the first attempt.
+    """
+
+    calls = {"count": 0}
+
+    def flaky_operation():
+        calls["count"] += 1
+        if calls["count"] < 2:
+            raise sqlite3.OperationalError("database is locked")
+        return {"status": "recovered", "call_number": calls["count"]}
+
+    state = {"thread_id": "retry-thread", "retry_count": 0}
+    value, event = tool_call(
+        state,
+        node="task_analysis",
+        agent="TaskAnalysisAgent",
+        tool_name="flaky_sqlite_op",
+        operation=flaky_operation,
+    )
+
+    assert value == {"status": "recovered", "call_number": 2}
+    assert event["success"] is True
+    assert calls["count"] == 2
+
+
+def test_tool_call_does_not_retry_non_transient_errors():
+    calls = {"count": 0}
+
+    def always_invalid():
+        calls["count"] += 1
+        raise ValueError("not a transient failure")
+
+    state = {"thread_id": "retry-thread-2", "retry_count": 0}
+    with pytest.raises(ValueError):
+        tool_call(
+            state,
+            node="task_analysis",
+            agent="TaskAnalysisAgent",
+            tool_name="invalid_op",
+            operation=always_invalid,
+        )
+
+    assert calls["count"] == 1
