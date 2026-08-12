@@ -1,5 +1,8 @@
+from datetime import datetime, timedelta, timezone
+import importlib.util
 from pathlib import Path
 
+import pytest
 from fastapi.testclient import TestClient
 
 from app.api.main import create_app
@@ -113,6 +116,76 @@ def test_api_logs_are_json_lines(tmp_path):
     import json
     parsed = [json.loads(line) for line in lines]
     assert any(item.get("event") == "api_request" for item in parsed)
+
+
+@pytest.mark.skipif(
+    importlib.util.find_spec("langgraph") is None,
+    reason="LangGraph dependency unavailable in this execution sandbox",
+)
+def test_full_api_workflow_reaches_interrupt_and_resumes_to_completion(tmp_path):
+    """Drives the real production surface: FastAPI -> real LangGraph graph ->
+    real interrupt() -> real Command(resume=...) -> persisted approved plan.
+    Dates are computed relative to the real clock so this stays deterministic
+    no matter when the suite runs.
+    """
+
+    client, _ = make_client(tmp_path)
+    with client:
+        course = client.post(
+            "/courses",
+            json={"user_id": "api-student", "code": "CEN 351", "name": "Signals", "credit_hours": 3},
+        ).json()
+        now = datetime.now(timezone.utc)
+        window_date = (now + timedelta(days=2)).date().isoformat()
+        deadline = (now + timedelta(days=3)).isoformat()
+        client.post(
+            "/tasks",
+            json={
+                "user_id": "api-student",
+                "title": "API workflow task",
+                "course_id": course["id"],
+                "deadline": deadline,
+                "estimated_hours": 2,
+                "difficulty": 3,
+                "user_priority": "high",
+            },
+        )
+        client.post(
+            "/availability",
+            json={
+                "user_id": "api-student",
+                "date": window_date,
+                "start_time": "18:00",
+                "end_time": "21:00",
+            },
+        )
+
+        started = client.post(
+            "/workflow/start",
+            json={"user_id": "api-student", "user_request": "Create my study plan"},
+        )
+        assert started.status_code == 200
+        body = started.json()
+        thread_id = body["thread_id"]
+        assert body["status"] == "awaiting_approval"
+        assert body["interrupt"]["type"] == "study_plan_approval"
+
+        fetched = client.get(f"/workflow/{thread_id}", params={"user_id": "api-student"})
+        assert fetched.status_code == 200
+        assert fetched.json()["status"] == "awaiting_approval"
+
+        resumed = client.post(
+            f"/workflow/{thread_id}/resume",
+            json={"user_id": "api-student", "decision": "approved"},
+        )
+        assert resumed.status_code == 200
+        resumed_body = resumed.json()
+        assert resumed_body["status"] == "completed"
+        assert resumed_body["state"]["approval_status"] == "approved"
+
+        plan = client.get(f"/plans/{thread_id}", params={"user_id": "api-student"})
+        assert plan.status_code == 200
+        assert plan.json()["status"] == "approved"
 
 
 def test_unknown_task_status_update_returns_404(tmp_path):

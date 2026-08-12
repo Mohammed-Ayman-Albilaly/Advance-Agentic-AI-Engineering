@@ -100,6 +100,13 @@ class WorkflowRuntime:
         values = dict(getattr(snapshot, "values", {}) or {})
         if values and values.get("user_id") != user_id:
             raise PermissionError("workflow does not belong to this user")
+        # ``StateSnapshot.interrupts`` is a separate field from ``values`` (unlike
+        # the dict returned by ``graph.invoke()``, which embeds ``__interrupt__``
+        # directly). Re-attach it so a client polling this endpoint while paused
+        # sees the same "awaiting_approval" status as the original invoke/resume.
+        interrupts = getattr(snapshot, "interrupts", None)
+        if interrupts and values:
+            values["__interrupt__"] = interrupts
         return self._response(thread_id, values)
 
     def resume(
