@@ -1,0 +1,23 @@
+DOCKER_HEALTH_SUCCESS=false
+Dockerfile:16
+
+--------------------
+
+  14 |     
+
+  15 |     COPY . .
+
+  16 | >>> RUN mkdir -p /app/data /app/logs && chown -R uniflow:uniflow /app
+
+  17 |     
+
+  18 |     USER uniflow
+
+--------------------
+
+failed to solve: process "/bin/sh -c mkdir -p /app/data /app/logs && chown -R uniflow:uniflow /app" did not complete successfully: exit code: 1
+
+
+
+View build details: docker-desktop://dashboard/build/default/default/8urasnj97aitml7snnw5koha9
+

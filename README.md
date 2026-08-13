@@ -7,6 +7,7 @@ The system converts persisted courses, academic tasks, deadlines, and study avai
 > **Capstone status:** implementation through Step 08 is complete. Automated tests (64 passed, 0 skipped) and all locally available execution paths are captured, including two of the three environment-dependent live proof runs: a real live OpenAI function-calling call (`evidence/step08_live_openai.txt`) and a real LangGraph re-plan loop plus durable HITL restart/resume against the installed LangGraph runtime (`evidence/step08_full_graph_hitl.txt`). The submission gate remains red only until the third proof — a live `docker compose up --build` health response — is captured. See `docs/FINAL_SUBMISSION_CHECKLIST.md`.
 
 ## Problem
+
 A normal to-do list stores deadlines but does not reason about urgency, workload, feasibility, conflicts, or re-planning. UniFlow AI adds an agentic workflow that inspects real persisted data, creates a schedule, reviews it, loops when the plan is infeasible, pauses for human approval, and persists the approved result.
 
 ## Architecture
@@ -41,15 +42,18 @@ Output Guardrail                        │
 ```
 
 ### Agents
+
 - **CoordinatorAgent** — centralized coordinator. In live mode, it uses OpenAI Responses API function calling to inspect real project context.
 - **TaskAnalysisAgent** — calculates urgency/priority and workload inputs through real tools.
 - **PlanningAgent** — implements the plan stage and switches strategy after reviewer feedback.
 - **ReviewerAgent** — independently validates capacity, deadlines, conflicts, and completeness.
 
 ### Reasoning pattern
+
 The primary named course pattern is **Plan-and-Execute**. Reviewer self-critique strengthens the execution loop without replacing the explicit Plan-and-Execute design.
 
 ## Real tools
+
 The project implements and executes real validated functions, including:
 
 ```text
@@ -65,6 +69,7 @@ save_study_plan               load_study_plan
 The live LLM coordinator can call read-only context tools. The model never controls `user_id`; user scope is injected by trusted application code.
 
 ## Security
+
 - Input prompt-injection/control-bypass guardrail.
 - Output schema/data validation.
 - Email and Saudi mobile-number masking.
@@ -78,6 +83,7 @@ The live LLM coordinator can call read-only context tools. The model never contr
 A real prompt-injection attack and output-protection path are captured in `evidence/`.
 
 ## Observability
+
 Machine-readable JSON Lines logs and Prometheus metrics capture:
 
 - tool calls and latency
@@ -92,11 +98,13 @@ Machine-readable JSON Lines logs and Prometheus metrics capture:
 Metrics are exposed at `GET /metrics`.
 
 ## Persistence and HITL
+
 Application data is stored in SQLite. LangGraph workflow state uses a separate file-backed SQLite checkpointer. A reviewer-approved plan reaches a real `interrupt()` node, and the same `thread_id` is used to resume after human input.
 
 Final evidence must prove that this pause survives an application restart before submission.
 
 ## API
+
 Main endpoints:
 
 ```text
@@ -116,6 +124,7 @@ GET   /plans/{thread_id}
 ```
 
 ## Requirements
+
 - Python 3.11+ (Docker image uses Python 3.12)
 - Project dependencies from `requirements.txt`
 - For live agent evidence: an OpenAI API key
@@ -219,6 +228,7 @@ SUBMISSION_READY=true
 ```
 
 ## Evidence
+
 Important captured artifacts include:
 
 ```text
@@ -238,6 +248,7 @@ evidence/step08_submission_gate.txt
 Step 07 protocol evidence deliberately labels the fake provider trajectory as **not live-provider evidence**. It proves the function-calling implementation while executing real SQLite tools. The real live OpenAI call is captured separately in `evidence/step08_live_openai.txt` (`LIVE_OPENAI_SUCCESS=true`, model `gpt-5.5`, 2 live API round-trips, all required context tools genuinely executed). The real installed-LangGraph re-plan loop and durable HITL restart/resume are captured in `evidence/step08_full_graph_hitl.txt` (`REPLAN_LOOP_SUCCESS=true`, `HITL_RESTART_RESUME_SUCCESS=true`).
 
 ## Documentation
+
 - `PROJECT_SPEC.md` — locked project scope and definition of done.
 - `RUBRIC_TRACEABILITY.md` — requirement-to-implementation/evidence mapping.
 - `docs/ARCHITECTURE.md` — state graph and component architecture.
@@ -247,14 +258,17 @@ Step 07 protocol evidence deliberately labels the fake provider trajectory as **
 - `docs/FINAL_SUBMISSION_CHECKLIST.md` — 100-point submission checklist and gate.
 
 ## Team
+
 - Mohammed Albilaly
 - Suliman Alhuwirini
 - Turki Alotaibi
 
 ## Training Program Attribution
+
 Completed under **Advanced Agentic AI Systems Engineering**, SDAIA Academy, delivered via Learning Space. 5-day on-site capstone cohort/session: **9–13 August 2026**.
 
 SDAIA Academy GitHub: https://github.com/SDAIAAcademy
 
 ## Git practices for submission
+
 The final GitHub repository must be built with meaningful incremental commits rather than one bulk upload. `.gitignore` excludes local secrets, databases, environments, logs, and generated artifacts that should not be committed. Evidence intended for evaluation remains in `evidence/`.
